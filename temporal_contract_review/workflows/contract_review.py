@@ -63,6 +63,11 @@ class ContractReviewWorkflow:
             start_to_close_timeout=timedelta(minutes=1),
         )
 
+        # AI Safety Guardrail: Failed validation escalates to human review
+        # This prevents low-quality AI output from flowing downstream
+        if not validation.passed:
+            await workflow.wait_condition(lambda: self.legal_approved)
+
         # DAPER Stage: Plan
         # Visibility debt: Complete workflow history provides provenance
         # All decisions, costs, timings, captured automatically for audit trail

@@ -99,18 +99,23 @@ Open http://localhost:8233 to see:
 
 ### Process Coordination Debt - HITL Signals
 - High risk contracts (score > 0.8) pause awaiting approval
+- Failed AI validation also triggers human review (AI safety guardrail)
 - Workflow can pause indefinitely (days) without losing state
 - Legal team sends approve signal to resume
 - Complete workflow context preserved across pause
 
 ### AI Evals
 - validate_extraction_quality activity checks AI output quality
-- Failed validation escalates to human review
+- Failed validation escalates to human review (second HITL scenario)
 - Prevents bad data from flowing downstream
 
 ## Testing HITL Flow
 
-If a workflow gets a high risk contract (random ~10% chance), it will pause waiting for approval. You'll see in the Temporal Web UI that the workflow is "Running" but waiting at a condition.
+The workflow will pause awaiting approval in two scenarios:
+1. **High risk contract** (score > 0.8, random ~10% chance)
+2. **Failed validation** (quality check fails, random ~10% chance)
+
+You'll see in the Temporal Web UI that the workflow is "Running" but waiting at a condition.
 
 ### Option 1: Using Temporal CLI (Recommended - Easiest)
 
