@@ -4,7 +4,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from temporal_contract_review.workflows.contract_review import ContractReviewWorkflow
-from temporal_contract_review.activities.contracts_activities import (
+from temporal_contract_review.activities.contract_activities import (
     extract_legal_terms,
     validate_extraction_quality,
     assess_risk,

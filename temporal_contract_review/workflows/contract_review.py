@@ -11,7 +11,7 @@ from temporal_contract_review.models.types import (
     ReviewResult,
 )
 
-from temporal_contract_review.activities.contracts_activities import (
+from temporal_contract_review.activities.contract_activities import (
     classify_contract,
     extract_legal_terms,
     validate_extraction_quality,
@@ -74,7 +74,7 @@ class ContractReviewWorkflow:
         )
 
         # DAPER Stage: Execute
-        # Process Coordination Debt: HITL for AI safety gaurdrails
+        # Process Coordination Debt: HITL for AI safety guardrails
         # Doc: https://docs.temporal.io/workflows#signals
         if risk_assessment.score > 0.8:
             # High risk contracts require human approval before proceeding
@@ -84,6 +84,7 @@ class ContractReviewWorkflow:
         await workflow.execute_activity(
             update_crm,
             args=[contract_id, risk_assessment],
+            task_queue="cpu-workers",
             start_to_close_timeout=timedelta(minutes=1),
         )
 
